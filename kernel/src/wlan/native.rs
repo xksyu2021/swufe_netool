@@ -1,20 +1,20 @@
 pub mod core{
-    use crate::wlan::share::frame::{Isp,AuthType};
+    use crate::wlan::share::frame::{Isp, AuthType, User};
     use windows::{
         Devices::WiFi::WiFiAdapter,
         core::Result
     };
     use windows::Devices::WiFi::{WiFiConnectionStatus, WiFiReconnectionKind};
 
-    pub async fn connect(isp: &Isp) -> Result<bool>{
+    pub async fn connect(isp: &Isp, user: &User) -> Result<bool>{
         match isp.auth_type {
-            AuthType::OpenAndWeb => conn_op_web(isp).await,
-            AuthType::Edu => conn_edu(isp).await,
+            AuthType::OpenAndWeb => conn_op_web(isp,user).await,
+            AuthType::Edu => conn_edu(isp,user).await,
             _ => Ok(false)
         }
     }
 
-    async fn conn_op_web(isp: &Isp) -> Result<bool>{
+    async fn conn_op_web(isp: &Isp, user: &User) -> Result<bool>{
         let adapters = WiFiAdapter::FindAllAdaptersAsync()?.await?;
         if adapters.Size() == Ok(0) {
             eprintln!("#100");
@@ -35,9 +35,10 @@ pub mod core{
                     println!("#900");
                     println!("OK: Native connection succeed.");
 
-                    // TODO: Web Auth
-
-                    return Ok(true);
+                    return match super::super::auth::core::act(isp, user).await {
+                        Ok(_) => Ok(true),
+                        Err(_) => Ok(false)
+                    }
                 }
 
                 eprintln!("#102");
@@ -51,7 +52,7 @@ pub mod core{
         Ok(false)
     }
 
-    async fn conn_edu(isp: &Isp) -> Result<bool>{
+    async fn conn_edu(isp: &Isp, user: &User) -> Result<bool>{
         Ok(true)
     }
 }

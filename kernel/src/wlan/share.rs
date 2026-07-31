@@ -1,8 +1,15 @@
 pub mod frame{
+    use secrecy::SecretString;
+
     pub enum AuthType{
         OpenAndWeb = 0,
         Edu,
         None
+    }
+
+    pub struct User{
+        pub account: String,
+        pub password: SecretString
     }
 
     pub struct Isp{
