@@ -1,4 +1,5 @@
 pub mod frame{
+    use reqwest::dns::Name;
     use secrecy::SecretString;
 
     pub enum AuthType{
@@ -14,6 +15,7 @@ pub mod frame{
 
     pub struct Isp{
         pub auth_type: AuthType,
+        pub name: String,
         pub ssid: String,
         pub domain: String,
         pub auth_add: String,
@@ -21,12 +23,14 @@ pub mod frame{
     }
 
     impl Isp {
-        pub fn new(auth_type: AuthType,
+        pub fn new(name: String,
+                   auth_type: AuthType,
                    ssid: &str,
                    domain: &str,
                    auth_add: &str,
                    auth_port: &str) -> Isp{
             Isp{
+                name,
                 auth_type,
                 ssid: String::from(ssid),
                 domain: String::from(domain),
@@ -42,10 +46,12 @@ pub mod isp{
     use super::frame::{AuthType, Isp};
 
     pub static CMCC: LazyLock<Isp> = LazyLock::new(|| {
-        Isp::new(AuthType::OpenAndWeb,"SWUFE_CMCC", "yd", "10.0.7.8", "8088")
+        Isp::new("cmcc".to_string(),AuthType::OpenAndWeb,"SWUFE_CMCC", "yd", "10.0.7.8", "8088")
     });
 
     pub static TEST: LazyLock<Isp> = LazyLock::new(|| {
-        Isp::new(AuthType::OpenAndWeb,"nullptr", "org", "xksyu.cn", "443")
+        Isp::new("test".to_string(),AuthType::OpenAndWeb,"nullptr", "org", "xksyu.cn", "443")
     });
+    
+    pub static LIST: [&LazyLock<Isp>; 2] = [&CMCC, &TEST];
 }
