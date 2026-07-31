@@ -6,6 +6,8 @@ mod ipc;
 use wlan::share::frame::User;
 use crate::wlan::native::core::connect;
 use crate::wlan::share::isp;
+use rpassword::read_password;
+use secrecy::SecretString;
 
 fn header(){
     println!();
@@ -44,16 +46,22 @@ async fn main() {
     stdin().read_line(&mut account);
     let account = account.trim().to_string();
 
-    let mut password = String::new();
     println!("#002");
     println!("Type in your password. Echo is closed for safety.");
-    stdin().read_line(&mut password);
-    let password = password.trim().to_string();
+    let raw = match read_password() {
+        Ok(pwd) => pwd,
+        Err(_) => {
+            println!("#802");
+            println!("FAILED(Sys): IO error!");
+            return;
+        }
+    };
+    let password = SecretString::new(Box::from(raw));
 
     println!();
     let user = User{
         account,
-        password: Default::default()
+        password
     };
 
     for item in isp::LIST {

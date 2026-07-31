@@ -43,6 +43,7 @@ Code	Reason		Description
 
 800		User			The ISP name passed in cannot match any items. You type in a wrong name. Only names showed in stdout are supported.
 801		System|Self	Unknown ansyc errors.
+802		System		IO error when pass in params.
 
 900		-			Native connection succeed. Then web auth begins if it needs.
 901		-			Web auth succeed.
