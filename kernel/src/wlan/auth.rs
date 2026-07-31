@@ -58,6 +58,8 @@ pub mod core{
     pub async fn act(isp: &Isp, user: &User) -> Result<bool, reqwest::Error> {
         let client = reqwest::Client::new();
 
+        let full_acc = format!("{}@{}",user.account,isp.domain);
+
         let ip = if let Some(ip) = get_ip() {
             ip
         } else {
@@ -75,7 +77,7 @@ pub mod core{
         };
 
         let cl_param = super::info::ClParam{
-            username: user.account.clone(),
+            username: full_acc.clone(),
             ip: ip.to_string(),
             double_stack: "0".to_string(),
             timestamp: time.to_string()
@@ -95,7 +97,7 @@ pub mod core{
 
             let post_param = info::PostParam {
                 action: "login".to_string(),
-                username: user.account.clone(),
+                username: full_acc.clone(),
                 password: "".to_string(),
                 ac_id: "1".to_string(),
                 ip,
