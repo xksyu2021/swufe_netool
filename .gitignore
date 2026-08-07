@@ -1,2 +1,4 @@
 /kernel/target/
-/kernel/.idea
+/gui/node_modules/
+/gui/dist/
+/.idea/

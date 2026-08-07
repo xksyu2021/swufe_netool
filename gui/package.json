@@ -1,0 +1,29 @@
+{
+  "name": "swufe_netool_gui",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/xksyu2021/swufe_netool#readme",
+  "bugs": {
+    "url": "https://github.com/xksyu2021/swufe_netool/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xksyu2021/swufe_netool.git"
+  },
+  "license": "ISC",
+  "author": "xksyu2021",
+  "type": "commonjs",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron .",
+    "watch": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.4.38",
+    "@types/node": "^26.1.2",
+    "electron": "^43.3.0",
+    "typescript": "^7.0.2"
+  }
+}
