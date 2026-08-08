@@ -14,11 +14,11 @@ enum type{
     EDU = "edu",
 }
 
-let isp = type.CMCC
+let isp:type
 
 function colorChange<T extends Record<string, string>>(p:T[keyof T], list: T){
     for(let item of Object.values(list)){
-        document.getElementById(item)?.style.setProperty("background-color","none")
+        document.getElementById(item)?.style.setProperty("background-color","unset")
     }
     document.getElementById(p)?.style.setProperty("background-color","beige")
 }
@@ -29,14 +29,14 @@ function viewChange_pos(p: pos){
             document.getElementById(pos_layout.DORM)?.style.setProperty("display", "flex")
             document.getElementById(pos_layout.TEACH)?.style.setProperty("display", "none")
             colorChange(pos.DORM,pos)
-            colorChange(type.CMCC,type)
+            viewChange_type(type.CMCC)
             break
         }
         case pos.TEACH: {
             document.getElementById(pos_layout.DORM)?.style.setProperty("display", "none")
             document.getElementById(pos_layout.TEACH)?.style.setProperty("display", "flex")
             colorChange(pos.TEACH,pos)
-            colorChange(type.ISWUFE,type)
+            viewChange_type(type.ISWUFE)
             break
         }
         default:
@@ -47,11 +47,26 @@ function viewChange_pos(p: pos){
 function viewChange_type(t: type){
     colorChange(t,type)
     isp = t
+    document.getElementById("edu-domain")?.style.setProperty("display", "none")
+    if(t === type.EDU){
+        document.getElementById("edu-domain")?.style.setProperty("display", "flex")
+    }
 }
 
-document.getElementById(pos.DORM)?.addEventListener(
-    'click',() => viewChange_pos(pos.DORM)
-)
-document.getElementById(pos.TEACH)?.addEventListener(
-    'click',() => viewChange_pos(pos.TEACH)
-)
+function init(){
+    isp = type.CMCC
+    viewChange_pos(pos.DORM)
+}
+
+init()
+
+for(let item of Object.values(pos)){
+    document.getElementById(item)?.addEventListener(
+        'click',() => viewChange_pos(item)
+    )
+}
+for(let item of Object.values(type)){
+    document.getElementById(item)?.addEventListener(
+        'click',() => viewChange_type(item)
+    )
+}

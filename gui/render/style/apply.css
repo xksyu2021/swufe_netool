@@ -25,10 +25,19 @@
     background-color: aliceblue;
     padding: 30px;
     border-radius: 20px;
-    gap: 15px;
+    gap: 20px;
 }
 
 .acc-input,.pwd-input{
-    justify-self: stretch;
+    width: 100%;
+    font-size: large;
 }
 
+.acc-layout label,
+.pwd-layout label {
+    flex: 1;
+}
+
+.acc-domain-static{
+    display: none;
+}
