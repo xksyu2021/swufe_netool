@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="./style/template.css">
+    <link rel="stylesheet" type="text/css" href="./style/apply.css">
+    <script type="module" src="../dist/render.js"></script>
+    <title>Swufe Netool GUI</title>
+</head>
+<body>
+
+    <div class="main-layout no-select">
+        <div class="select-layout col">
+            <div class="pos-layout row">
+                <div class="pos-static">位置&emsp;</div>
+                <div class="pos-dorm-static bt" id="dorm">宿舍</div>
+                <div class="pos-teach-static bt" id="teach">教学区</div>
+            </div>
+
+            <div class="isp-dorm-layout row" id="dorm-layout">
+                <div class="pos-static">运营商</div>
+                <div class="isp-dorm-cmcc-static bt" id="cmcc">移动</div>
+                <div class="isp-dorm-cucc-static bt" id="cucc">联通</div>
+                <div class="isp-dorm-cnet-static bt" id="cnet">电信</div>
+            </div>
+            <div class="isp-teach-layout row" id="teach-layout">
+                <div class="pos-static">运营商</div>
+                <div class="isp-edu-iswufe-static bt" id="iswufe">iSwufe</div>
+                <div class="isp-edu-edu-static bt" id="edu">Eduroam</div>
+            </div>
+        </div>
+
+        <div class="input-layout col">
+            <div class="acc-layout row">
+                <div class="acc-static">学号</div>
+                <label>
+                    <input type="text" class="acc-input">
+                </label>
+                <div class="acc-domain-static">@swufe.edu.cn</div>
+            </div>
+            <div class="pwd-layout row">
+                <div class="pwd-static">密码</div>
+                <label>
+                    <input type="password" class="pwd-input"/>
+                </label>
+            </div>
+        </div>
+
+        <div class="conn-bt bt">连接</div>
+    </div>
+
+</body>
+</html>
