@@ -14,6 +14,21 @@ enum type{
     EDU = "edu",
 }
 
+type Info = {
+    isp: string,
+    account: string,
+    password: string
+}
+
+interface Window {
+    conn: {
+        submit: (info: Info) => Promise<{
+            success: boolean
+            message: string
+        }>
+    }
+}
+
 let isp:type
 
 function colorChange<T extends Record<string, string>>(p:T[keyof T], list: T){
@@ -58,6 +73,18 @@ function init(){
     viewChange_pos(pos.DORM)
 }
 
+function submit(){
+    const info: Info = {
+        isp,
+        account: document.querySelector<HTMLInputElement>("#acc")?.value ?? "",
+        password: document.querySelector<HTMLInputElement>("#pwd")?.value ?? ""
+    }
+
+    window.conn.submit(info).then(r => {
+
+    })
+}
+
 init()
 
 for(let item of Object.values(pos)){
@@ -70,3 +97,6 @@ for(let item of Object.values(type)){
         'click',() => viewChange_type(item)
     )
 }
+document.getElementById("conn")?.addEventListener(
+    'click',() => submit()
+)
