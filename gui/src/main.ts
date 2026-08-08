@@ -8,7 +8,8 @@ const createWindow = () => {
         resizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
-        }
+        },
+        icon: path.join(__dirname, '../assets/icon.ico')
     })
     win.removeMenu()
     win.loadFile('render/index.html')
@@ -24,6 +25,6 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('submit',(_event, info) => {
 
-    
+
 
 })
