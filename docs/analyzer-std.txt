@@ -1,0 +1,9 @@
+args & stdout code list of analyzer
+used for IPC
+
+1. args
+
+
+
+2. stdout
+

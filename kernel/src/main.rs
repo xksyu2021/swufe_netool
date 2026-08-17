@@ -7,24 +7,10 @@ use crate::wlan::share::isp;
 use rpassword::read_password;
 use secrecy::SecretString;
 
-fn header(){
-    println!();
-    println!("Swufe Netool Kernel v1.0");
-    println!();
-    println!("Using Free Software License v1.0 or later");
-    println!("Develop together on https://github.com/xksyu2021/swufe_netool");
-    println!("Free software. If you paid for this, please request a refund and report the merchant.");
-    println!();
-    println!("Dedicated for experts. Ordinary users use the GUI version please.");
-    println!();
-}
-
 #[tokio::main]
 async fn main() {
-    header();
-
     let mut isp_param =  String::new();
-    println!("#000");
+    println!("*000");
     println!("Type in the ISP name. It should be one of these following:");
     let mut tmp = false;
     for item in &isp::LIST{

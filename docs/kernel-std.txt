@@ -1,0 +1,35 @@
+stdout & stderr code list of kernel
+used for IPC
+
+1. stdout
+with the form of:   *xxx
+example:            *pwd
+    starts with *
+    3 ASCII English character following
+they are signals to direct pass-in process.
+
+Code    Info
+*isp    pass in ISP code - cmcc | cucc | cnet | iswufe | kernel
+*acc    pass in the account - need not domian
+*pwd    pass in the password
+*suc    connection succeed, then kernel exits.
+
+2. stderr
+with the form of:   *xxx message#
+example:            *000 panic#
+    starts with *
+    3 ASCII number following
+    1 space following
+    message following
+    ends with #
+they are signals of error, kernel exits after stderr.
+only zero or one of them will appear.
+
+Code    Info
+*000#   when kernel exits with no stderr, you can pass in this to the analyzer.
+*100#   system running time error, or bugs of kernel.
+*101#   system config error. check devices, drivers, permissions etc.
+*200#   auth server reject connection. auth server updated.
+*201#   auth unpass. check password, isp, phone bill; or VPN, DNS.
+*202#   cannot get target ssid. you are not at school, or someone broadcasts fake ssid.
+*300#   connection and auth success, but ping failed. school network error.
