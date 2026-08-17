@@ -1,0 +1,22 @@
+// These response codes are dedicatedly designed for developers who familars with Rust and Electron.
+// Developers of the GUI software shall write popular and complete description for regular users by yourself.
+
+/ The kernel returns info with following form.
+/*
+ * #<Code>
+ * FAILED/OK: <Short Description>
+ *
+ * #100
+ * FAILED: Cannot create pipe!
+ */
+// Developers of the GUI software shall only read code (starts with a # signal) to write response.
+
+Code    Reason
+100     Cannot create pipe.
+101     Cannot connect gui.
+102     Connot start gui.
+103     Connot start kernel.
+104     Cannot obtain console stdin!
+105     Cannot obtain console stdout!
+106     IPC IO ERROR in gui->console!
+107     IPC IO ERROR in console->gui!

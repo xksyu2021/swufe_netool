@@ -7,7 +7,8 @@ edition = "2024"
 tokio = { version = "1.53.1", features = [
     "macros",
     "rt-multi-thread",
-    "net",
-    "io-util"
+    "process",
+    "io-util",
+    "net"
 ] }
 windows-sys = "0.61.2"

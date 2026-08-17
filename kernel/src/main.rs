@@ -1,8 +1,6 @@
-use std::io::stdin;
-
 mod wlan;
-mod ipc;
 
+use std::io::stdin;
 use wlan::share::frame::User;
 use crate::wlan::native::core::connect;
 use crate::wlan::share::isp;

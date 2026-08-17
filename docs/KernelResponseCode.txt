@@ -3,10 +3,10 @@
 // You need to handle it with your experience.
 // Developers of the GUI software shall write popular and complete description for regular users by yourself.
 
-// Reason		Meaning
-// System		Your computer, Windows system or your system settings gets someting wrong.
-// Self		    This software has bugs or uses an unproper way to get system source.
-// User		    Users makes wrong options or Swufe network has error.
+Reason		Meaning
+System		Your computer, Windows system or your system settings gets someting wrong.
+Self		This software has bugs or uses an unproper way to get system source.
+User	    Users makes wrong options or Swufe network has error.
 
 // The kernel returns info with following form.
 /*
@@ -18,9 +18,9 @@
  */
 // Developers of the GUI software shall only read code (starts with a # signal) to write response.
 
-// 0xx		are used in main process to guide user and GUI software to operate. 
+// 0xx		    are used in main process to guide user and GUI software to operate. 
 // 1xx - 8xx	are used to describe errors in connection workflow. They are unique and when error occours, only one of them will be shown.
-// 9xx 		are used to show success work in connection workflow.
+// 9xx 		    are used to show success work in connection workflow.
 
 Code	Reason		Description
 000		-			Pass in ISP name now. Name includes [ cmcc , cucc , cnet , iswufe , eduroam ]
