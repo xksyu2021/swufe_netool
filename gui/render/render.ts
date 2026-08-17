@@ -1,25 +1,55 @@
-enum pos{
-    DORM = "dorm",
-    TEACH = "teach",
-}
-enum pos_layout {
-    DORM = "dorm-layout",
-    TEACH = "teach-layout"
-}
-enum type{
-    CMCC = "cmcc",
-    CUCC = "cucc",
-    CNET = "cnet",
-    ISWUFE = "iswufe",
-    EDU = "edu",
+// id groups used in traverse
+let pos_bt_list = ["bt-dorm","bt-teach"]
+let isp_bt_list = ["bt-cmcc","bt-cucc","bt-cnet","bt-iswufe","bt-edu"]
+
+// isp var used for submit
+let isp:string = "cmcc"
+
+// change the color of buttons to show which is selected
+function colorChange(bt:string, list:string[]){
+    for(let item of Object.values(list)){
+        document.getElementById(item)?.style.setProperty("background-color","unset")
+    }
+    document.getElementById(bt)?.style.setProperty("background-color","beige")
 }
 
+// change the layout when buttons are pressed
+function viewChange_pos(p: string){
+    switch (p) {
+        case "bt-dorm": {
+            document.getElementById("bt-dorm")?.style.setProperty("display", "flex")
+            document.getElementById("bt-teach")?.style.setProperty("display", "none")
+            colorChange("bt-dorm",pos_bt_list)
+            viewChange_type("cmcc")
+            break
+        }
+        case "bt-teach": {
+            document.getElementById("bt-dorm")?.style.setProperty("display", "none")
+            document.getElementById("bt-teach")?.style.setProperty("display", "flex")
+            colorChange("bt-teach",pos_bt_list)
+            viewChange_type("iswufe")
+            break
+        }
+        default:
+            break
+    }
+}
+function viewChange_type(t: string){
+    colorChange(t,isp_bt_list)
+    isp = t
+    if(t === "bt-edu"){
+        document.getElementById("st-domain")?.style.setProperty("display", "flex")
+    } else {
+        document.getElementById("st-domain")?.style.setProperty("display", "none")
+    }
+}
+
+// submit structure
 type Info = {
     isp: string,
     account: string,
     password: string
 }
-
 interface Window {
     conn: {
         submit: (info: Info) => Promise<{
@@ -29,50 +59,7 @@ interface Window {
     }
 }
 
-let isp:type
-
-function colorChange<T extends Record<string, string>>(p:T[keyof T], list: T){
-    for(let item of Object.values(list)){
-        document.getElementById(item)?.style.setProperty("background-color","unset")
-    }
-    document.getElementById(p)?.style.setProperty("background-color","beige")
-}
-
-function viewChange_pos(p: pos){
-    switch (p) {
-        case pos.DORM: {
-            document.getElementById(pos_layout.DORM)?.style.setProperty("display", "flex")
-            document.getElementById(pos_layout.TEACH)?.style.setProperty("display", "none")
-            colorChange(pos.DORM,pos)
-            viewChange_type(type.CMCC)
-            break
-        }
-        case pos.TEACH: {
-            document.getElementById(pos_layout.DORM)?.style.setProperty("display", "none")
-            document.getElementById(pos_layout.TEACH)?.style.setProperty("display", "flex")
-            colorChange(pos.TEACH,pos)
-            viewChange_type(type.ISWUFE)
-            break
-        }
-        default:
-            break
-    }
-}
-
-function viewChange_type(t: type){
-    colorChange(t,type)
-    isp = t
-    document.getElementById("edu-domain")?.style.setProperty("display", "none")
-    if(t === type.EDU){
-        document.getElementById("edu-domain")?.style.setProperty("display", "flex")
-    }
-}
-
-function init(){
-    isp = type.CMCC
-    viewChange_pos(pos.DORM)
-}
-
+// submit to main process
 function submit(){
     const info: Info = {
         isp,
@@ -85,18 +72,20 @@ function submit(){
     })
 }
 
-init()
-
-for(let item of Object.values(pos)){
+// button listeners
+for(let item of Object.values(pos_bt_list)){
     document.getElementById(item)?.addEventListener(
         'click',() => viewChange_pos(item)
     )
 }
-for(let item of Object.values(type)){
-    document.getElementById(item)?.addEventListener(
+for(let item of Object.values(isp_bt_list)){
+    document.getElementById(isp)?.addEventListener(
         'click',() => viewChange_type(item)
     )
 }
 document.getElementById("conn")?.addEventListener(
     'click',() => submit()
 )
+
+// init the layout
+viewChange_pos("dorm")
