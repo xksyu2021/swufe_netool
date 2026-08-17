@@ -1,12 +1,12 @@
 // These response codes are dedicatedly designed for developers or students who familars with Swufe network.
-// The desciption may give you a example, but examples are not comprehensive.
+// The desciption may give you an example, but examples are not comprehensive.
 // You need to handle it with your experience.
 // Developers of the GUI software shall write popular and complete description for regular users by yourself.
 
 // Reason		Meaning
-// System		Your computer, windows system or your system settings gets someting wrong.
-// Self		This software has bugs or uses a unproper way to get system source. 
-// User		Users makes wrong options or Swufe network has error.
+// System		Your computer, Windows system or your system settings gets someting wrong.
+// Self		    This software has bugs or uses an unproper way to get system source.
+// User		    Users makes wrong options or Swufe network has error.
 
 // The kernel returns info with following form.
 /*
@@ -14,7 +14,7 @@
  * FAILED/OK (Sys/Usr/Self): <Short Description>
  *
  * #100
- * FAILED(Sys): No WiFi adapter!
+ * FAILED(Sys): No Wi-Fi adapter!
  */
 // Developers of the GUI software shall only read code (starts with a # signal) to write response.
 
@@ -31,17 +31,17 @@ Code	Reason		Description
 005		-			Connection succeed and the web works well. You can close this software safely.
 006		-			Connection succeed but internet test failed.
 
-100		System		WiFi adapters not found. Check the drivers and Windows Updates.
-101		User			Target WiFi (e.g. CMCC, Eduroam) not found. Are you sure you are in our compus? And check your option. (Dorms - CMCC, etc. Classroom - iSwufe, etc.)
-102		User|Self		Found target WiFi, but cannot connect it. Maybe campus network error, your devices beyond support, this software use wrong connect methods. 
+100		System	    System Wi-Fi adapters not found. Check the drivers and Windows Updates.
+101		User		Target Wi-Fi (e.g. CMCC, Eduroam) not found. Are you sure you are in our compus? And check your option. (Dorms - CMCC, etc. Classroom - iSwufe, etc.)
+102		User|Self	Found target Wi-Fi, but cannot connect it. Maybe campus network error, your devices beyond support, this software use wrong connect methods.
 
-200		System		System time is wrong.
-201		User			Cannot get ipv4 through socket UDP connection. Maybe the checking website is down.
-202		User|Self		Cannot connect the challenge server. Maybe it is down or changed or this software use wrong info.
-203		Self			Cannot get challenge code. Maybe this software use wrong info.
-204		User|Self		Auth not pass. Check your account, password, position, ISP name... Or this software use wrong info.
+200		System      System time is wrong.
+201		User		Cannot get ipv4 through socket UDP connection. Maybe the checking website is down.
+202		User|Self	Cannot connect the challenge server. Maybe it is down or changed or this software use wrong info.
+203		Self		Cannot get challenge code. Maybe this software use wrong info.
+204		User|Self	Auth not pass. Check your account, password, position, ISP name... Or this software use wrong info.
 
-800		User			The ISP name passed in cannot match any items. You type in a wrong name. Only names showed in stdout are supported.
+800		User		The ISP name passed in cannot match any items. You type in a wrong name. Only names showed in stdout are supported.
 801		System|Self	Unknown ansyc errors.
 802		System		IO error when pass in params.
 
