@@ -53,7 +53,7 @@ type Info = {
 interface Window {
     conn: {
         submit: (info: Info) => Promise<{
-            success: boolean
+            ok: boolean,
             message: string
         }>
     }
