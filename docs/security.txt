@@ -1,0 +1,2 @@
+This document records how password is restored and passed.
+

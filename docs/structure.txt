@@ -1,0 +1,31 @@
+Structure of swufe_netool
+
+1. global structure
+
+This project has 4 parts.
+Part        Type        Usage
+kernel      Console     Connect to the network and perform auth.
+analyzer    Console     Auto fix errors in computer, and analyze errors from kernel and network.
+gui         GUI         Ordinary user interaction window.
+doc         Document    Docs of project development.
+
+GUI is the entry point of this project.
+It starts kernel or analyzer through IPC pipe when it needs.
+
+2. kernel
+
+A Rust console program.
+Kernel receives connection info from stdin.
+Then it establishs a Wi-Fi connection on the computer through WinRT API.
+If this connection needs auth, kernel simulates the original protocol through HTTP POST and GET.
+When gets errors, kernel throws them out from stderr.
+
+3. analyzer
+
+A Rust console program.
+
+4. gui
+
+An Electron GUI program. Powered by Node.js and TypeScript.
+Render process provides GUI window;
+Main process handles operations, starts console programs and connect them through IPC pipe.
