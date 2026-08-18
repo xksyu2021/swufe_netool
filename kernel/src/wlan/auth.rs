@@ -74,16 +74,14 @@ pub mod core{
         let ip = if let Some(ip) = get_ip() {
             ip
         } else {
-            eprintln!("#201");
-            eprintln!("FAILED(Usr): Cannot get ipv4!");
+            eprintln!("*102 Cannot get ipv4.#");
             return Ok(false)
         };
 
         let time = if let Ok(time) = timestamp() {
             time
         } else {
-            eprintln!("#200");
-            eprintln!("FAILED(Sys): Wrong system time!");
+            eprintln!("*102 Wrong system time.#");
             return Ok(false)
         };
 
@@ -101,8 +99,7 @@ pub mod core{
             let challenge = if let Some(cl) = rp_map.challenge {
                 cl
             } else {
-                eprintln!("#203");
-                eprintln!("FAILED(Sys): Connot get challenge code!");
+                eprintln!("*200 No challenge code.#");
                 return Ok(false)
             };
 
@@ -137,18 +134,12 @@ pub mod core{
             let post_response = client.post(&post_url).form(&post_param).send().await?;
 
             if post_response.status().is_success() {
-                println!("#901");
-                println!("OK: Auth succeed.");
                 return Ok(true)
             }
-
-            eprintln!("#204");
-            eprintln!("FAILED(Usr|Self): Auth not pass!");
+            eprintln!("#201 Auth unpass.");
             return Ok(false)
         }
-
-        eprintln!("#202");
-        eprintln!("FAILED(Usr|Self): Cannot connect challenge server!");
+        eprintln!("#200 Connect to auth server failed.");
         Ok(false)
     }
 }

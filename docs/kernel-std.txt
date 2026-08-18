@@ -9,7 +9,7 @@ example:            *pwd
 they are signals to direct pass-in process.
 
 Code    Info
-*isp    pass in ISP code - cmcc | cucc | cnet | iswufe | kernel
+*isp    pass in ISP code - cmcc | cucc | cnet | iswufe | eduroam
 *acc    pass in the account - need not domian
 *pwd    pass in the password
 *suc    connection succeed, then kernel exits.
@@ -29,6 +29,7 @@ Code    Info
 *000#   when kernel exits with no stderr, you can pass in this to the analyzer.
 *100#   system running time error, or bugs of kernel.
 *101#   system config error. check devices, drivers, permissions etc.
+*102#   system running time error, or bugs of gui, IPC.
 *200#   auth server reject connection. auth server updated.
 *201#   auth unpass. check password, isp, phone bill; or VPN, DNS.
 *202#   cannot get target ssid. you are not at school, or someone broadcasts fake ssid.

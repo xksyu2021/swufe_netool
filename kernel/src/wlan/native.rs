@@ -10,15 +10,17 @@ pub mod core{
         match isp.auth_type {
             AuthType::OpenAndWeb => conn_op_web(isp,user).await,
             AuthType::Edu => conn_edu(isp,user).await,
-            _ => Ok(false)
+            _ => {
+                eprintln!("*100 No connection type matched.");
+                Ok(false)
+            }
         }
     }
 
     async fn conn_op_web(isp: &Isp, user: &User) -> Result<bool>{
         let adapters = WiFiAdapter::FindAllAdaptersAsync()?.await?;
         if adapters.Size() == Ok(0) {
-            eprintln!("#100");
-            eprintln!("FAILED(Sys): No WiFi adapter!");
+            eprintln!("*101 No WLAN adapter.");
             return Ok(false)
         }
 
@@ -31,28 +33,26 @@ pub mod core{
                 let response =
                     adapter.ConnectAsync(&network,WiFiReconnectionKind::Automatic)?.await?;
 
-                if response.ConnectionStatus()? == WiFiConnectionStatus::Success {
-                    println!("#900");
-                    println!("OK: Native connection succeed.");
-
+                let res = response.ConnectionStatus()?;
+                if res == WiFiConnectionStatus::Success {
                     return match super::super::auth::core::act(isp, user).await {
                         Ok(_) => Ok(true),
-                        Err(_) => Ok(false)
+                        Err(e) => {
+                            eprintln!("*100 {e}");
+                            Ok(false)
+                        }
                     }
                 }
-
-                eprintln!("#102");
-                eprintln!("FAILED(User|Self): Connection failed!");
+                eprintln!("*100 {:?}",res);
                 return Ok(false);
             }
         }
-
-        eprintln!("#101");
-        eprintln!("FAILED(User): No Target Wifi!");
+        eprintln!("#202 No target SSID.");
         Ok(false)
     }
 
     async fn conn_edu(isp: &Isp, user: &User) -> Result<bool>{
-        Ok(true)
+        eprintln!("*100 Under developing.");
+        Ok(false)
     }
 }

@@ -1,5 +1,4 @@
 pub mod frame{
-    use reqwest::dns::Name;
     use secrecy::SecretString;
 
     pub enum AuthType{
