@@ -32,7 +32,7 @@ public:
         DWORD dwStyle,
         int cpt_row, int cpt_col, int cpt_row_ride, int cpt_col_ride,
         int margin
-    );
+    ) const;
     // tools
     [[nodiscard]] HWND getHwnd(int id) const;
     void setPos(

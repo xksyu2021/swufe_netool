@@ -1,4 +1,4 @@
-#include "share.h"
+#include "../share.h"
 
 void Creator::reflesh() {
     // compute cell size
@@ -17,7 +17,7 @@ void Creator::spwan(
     DWORD dwStyle,
     int cpt_row, int cpt_col, int cpt_row_ride, int cpt_col_ride,
     int margin
-) {
+) const {
     // compute position
     int x = (cpt_col-1) * cellW + cpt_col * gap + margin;
     int y = (cpt_row-1) * cellH + cpt_row * gap + margin;

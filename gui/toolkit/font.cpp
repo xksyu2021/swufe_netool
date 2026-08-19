@@ -1,4 +1,4 @@
-#include "share.h"
+#include "../share.h"
 
 BOOL CALLBACK setFontCallback(HWND hwndChild, LPARAM lParam)
 {

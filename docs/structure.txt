@@ -9,7 +9,7 @@ analyzer    Console     Auto fix errors in computer, and analyze errors from ker
 gui         GUI         Ordinary user interaction window.
 doc         Document    Docs of project development.
 
-GUI is the entry point of this project.
+GUI works as a hub in this project.
 It starts kernel or analyzer through IPC pipe when it needs.
 
 2. kernel
@@ -23,7 +23,15 @@ When gets errors, kernel throws them out from stderr.
 3. analyzer
 
 A Rust console program.
+It has two mode.
+One is work as a toolkit to fix network problems in your pc;
+Another one is to analyze errors from kernel.
+It provides the result in stdout.
 
 4. gui
 
 A C++ Win32 GUI program.
+It provides a simpler and more direct interactive interface for ordinary users.
+Users only need to tap the button, type in their ID and password.
+This program will call the kernel to handle connection automatically in the background.
+It can also call the analyzer to analyze errors from kernel, or research network problems in your pc.
