@@ -26,4 +26,4 @@ A Rust console program.
 
 4. gui
 
-A Rust GUI program.
+A C++ Win32 GUI program.

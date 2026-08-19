@@ -1,7 +1,7 @@
 #include "share.h"
 
 namespace MainLayout {
-    auto ctr = Creater(mainHwnd, 16, 26, 0);
+    auto ctr = Creator(mainHwnd, 16, 26, 0);
 
     enum id {
         LABLE_POS = 1000, LABLE_ISP,
