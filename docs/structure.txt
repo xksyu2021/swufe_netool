@@ -26,6 +26,4 @@ A Rust console program.
 
 4. gui
 
-An Electron GUI program. Powered by Node.js and TypeScript.
-Render process provides GUI window;
-Main process handles operations, starts console programs and connect them through IPC pipe.
+A Rust GUI program.
