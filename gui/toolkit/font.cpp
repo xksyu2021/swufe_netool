@@ -1,9 +1,11 @@
 #include "../share.h"
 
-BOOL CALLBACK setFontCallback(HWND hwndChild, LPARAM lParam)
-{
-    SendMessageW(hwndChild, WM_SETFONT, static_cast<WPARAM>(lParam), TRUE);
-    return TRUE;
+namespace {
+    BOOL CALLBACK setFontCallback(HWND hwndChild, LPARAM lParam)
+    {
+        SendMessageW(hwndChild, WM_SETFONT, static_cast<WPARAM>(lParam), TRUE);
+        return TRUE;
+    }
 }
 
 void setGlobalFont() {

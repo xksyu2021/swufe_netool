@@ -1,9 +1,29 @@
 #include "../share.h"
 
-static void checkAndClose(HANDLE &hd) {
-    if (hd) {
-        CloseHandle(hd);
-        hd = nullptr;
+namespace {
+    void checkAndClose(HANDLE &hd) {
+        if (hd) {
+            CloseHandle(hd);
+            hd = nullptr;
+        }
+    }
+
+    void readPipe(HANDLE pipe, WSTR& out) {
+        DWORD available = 0;
+        PeekNamedPipe(pipe, nullptr, 0, nullptr, &available, nullptr);
+        if (available == 0) {
+            return;
+        }
+        char buffer[4096];
+        DWORD read = 0;
+        if (!ReadFile(pipe, buffer, sizeof(buffer), &read, nullptr) || read == 0) {
+            return;
+        }
+        const int wide_len = MultiByteToWideChar(CP_UTF8, 0, buffer, read, nullptr, 0);
+        if (wide_len <= 0) return;
+        WSTR wide(wide_len, L'\0');
+        MultiByteToWideChar(CP_UTF8, 0, buffer, read, wide.data(), wide_len);
+        out += wide;
     }
 }
 
@@ -96,24 +116,6 @@ void Ipc::send(const CWSTRP in) const {
 
 void Ipc::sendLn() const {
     send(L"\n");
-}
-
-void Ipc::readPipe(HANDLE pipe, WSTR& out) {
-    DWORD available = 0;
-    PeekNamedPipe(pipe, nullptr, 0, nullptr, &available, nullptr);
-    if (available == 0) {
-        return;
-    }
-    char buffer[4096];
-    DWORD read = 0;
-    if (!ReadFile(pipe, buffer, sizeof(buffer), &read, nullptr) || read == 0) {
-        return;
-    }
-    const int wide_len = MultiByteToWideChar(CP_UTF8, 0, buffer, read, nullptr, 0);
-    if (wide_len <= 0) return;
-    WSTR wide(wide_len, L'\0');
-    MultiByteToWideChar(CP_UTF8, 0, buffer, read, wide.data(), wide_len);
-    out += wide;
 }
 
 void Ipc::readOut(WSTR& out) const {

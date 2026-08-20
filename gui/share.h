@@ -9,9 +9,8 @@ typedef std::wstring         WSTR;
 typedef std::wstring_view   CWSTR;
 typedef LPCWSTR             CWSTRP;
 typedef LPWSTR               WSTRP;
-
-typedef std::string          STR;
-typedef std::string_view    CSTR;
+typedef std::string           STR;
+typedef std::string_view     CSTR;
 
 // shared vars
 inline HWND mainHwnd = nullptr;
@@ -35,6 +34,7 @@ public:
         int cpt_row, int cpt_col, int cpt_row_ride, int cpt_col_ride,
         int margin
     ) const;
+
     // tools
     [[nodiscard]] HWND getHwnd(int id) const;
     void setPos(
@@ -42,6 +42,7 @@ public:
         int cpt_row, int cpt_col, int cpt_row_ride, int cpt_col_ride,
         int margin
     ) const;
+
     void setVisible(int id, bool bl) const;
     [[nodiscard]] bool isChecked(int id) const;
 };
@@ -69,7 +70,6 @@ class Ipc {
     HANDLE process = nullptr;
 
     static void createJob();
-    static void readPipe(HANDLE pipe, WSTR& out);
 
     void close();
 
