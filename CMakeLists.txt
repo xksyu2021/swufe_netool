@@ -8,9 +8,10 @@ add_executable(swufe_netool WIN32
         gui/main.cpp
         gui/share.h
         gui/window.cpp
-        gui/ipc.cpp
+        gui/call.cpp
         gui/toolkit/font.cpp
         gui/toolkit/creater.cpp
+        gui/toolkit/ipc.cpp
 )
 
 target_compile_definitions(swufe_netool PRIVATE

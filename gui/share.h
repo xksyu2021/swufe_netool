@@ -50,6 +50,30 @@ void setGlobalFont();
 // main layout
 namespace MainLayout {
     void init();
-    void callback(WORD wmId);
+    void callback(WORD);
     void del();
+};
+
+class Ipc {
+    inline static HANDLE job = nullptr;
+
+    HANDLE stdin_read = nullptr;
+    HANDLE stdout_write = nullptr;
+    HANDLE stderr_write = nullptr;
+    HANDLE stdin_write = nullptr;
+    HANDLE stdout_read = nullptr;
+    HANDLE stderr_read = nullptr;
+    HANDLE process = nullptr;
+
+    static void createJob();
+
+    void close();
+
+public:
+    Ipc(WSTRP);
+    ~Ipc();
+    void send(WSTRP) const;
+    void readOut(WSTRP buffer, DWORD size) const;
+    void readErr(WSTRP buffer, DWORD size) const;
+    bool active() const;
 };
