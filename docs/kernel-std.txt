@@ -6,13 +6,14 @@ with the form of:   *xxx
 example:            *pwd
     starts with *
     3 ASCII English character following
+    ends with #
 they are signals to direct pass-in process.
 
 Code    Info
-*isp    pass in ISP code - cmcc | cucc | cnet | iswufe | eduroam
-*acc    pass in the account - need not domian
-*pwd    pass in the password
-*suc    connection succeed, then kernel exits.
+*isp#   pass in ISP code - cmcc | cucc | cnet | iswufe | eduroam
+*acc#   pass in the account - need not domian
+*pwd#   pass in the password
+*suc#   connection succeed, then kernel exits.
 
 2. stderr
 with the form of:   *xxx message#
@@ -34,3 +35,9 @@ Code    Info
 *201#   auth unpass. check password, isp, phone bill; or VPN, DNS.
 *202#   cannot get target ssid. you are not at school, or someone broadcasts fake ssid.
 *300#   connection and auth success, but ping failed. school network error.
+
+3. tips
+after a stdout, kernel will hang up to wait stdin;
+after a stderr, kernel will exit.
+so if you clean the buffer after reciving the last #,
+there is always zero or one *# code in your buffer.

@@ -11,16 +11,16 @@ use secrecy::SecretString;
 async fn main() {
     // input info
     let mut isp_param =  String::new();
-    println!("*isp");
+    println!("*isp#");
     stdin().read_line(&mut isp_param);
     let isp_param = isp_param.trim().to_string();
 
     let mut account = String::new();
-    println!("*acc");
+    println!("*acc#");
     stdin().read_line(&mut account);
     let account = account.trim().to_string();
 
-    println!("*pwd");
+    println!("*pwd#");
     let raw = match read_password() {
         Ok(pwd) => pwd,
         Err(e) => {
@@ -41,7 +41,7 @@ async fn main() {
         if isp_param == item.name {
             match connect(item, &user).await {
                 Ok(true) => {
-                    println!("*suc");
+                    println!("*suc#");
                     return;
                 }
                 Ok(false) => {
