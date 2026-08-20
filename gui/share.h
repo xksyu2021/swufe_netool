@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <windows.h>
+#include <mutex>
 
 // simplize string types.
 // C: no edit    W: wide    P: pointer for Win32
@@ -8,6 +9,7 @@ typedef std::wstring         WSTR;
 typedef std::wstring_view   CWSTR;
 typedef LPCWSTR             CWSTRP;
 typedef LPWSTR               WSTRP;
+
 typedef std::string          STR;
 typedef std::string_view    CSTR;
 
@@ -67,24 +69,27 @@ class Ipc {
     HANDLE process = nullptr;
 
     static void createJob();
+    static void readPipe(HANDLE pipe, WSTR& out);
 
     void close();
 
 public:
     Ipc(CWSTRP);
     ~Ipc();
-    void send(WSTRP) const;
+    void send(CWSTRP) const;
     void sendLn() const;
-    void readOut(WSTRP buffer, DWORD size) const;
-    void readErr(WSTRP buffer, DWORD size) const;
+    void readOut(WSTR&) const;
+    void readErr(WSTR&) const;
     [[nodiscard]] bool active() const;
 };
 
 // info
 inline struct Info {
-    WSTRP isp, acc, pwd;
+    WSTR isp, acc, pwd;
 } info;
 
 // op function
 void submit();
 void analyze();
+inline bool submit_lock = false;
+inline bool analyze_lock = false;

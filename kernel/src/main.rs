@@ -20,14 +20,16 @@ async fn main() {
     stdin().read_line(&mut account);
     let account = account.trim().to_string();
 
+    let mut raw = String::new();
     println!("*pwd#");
-    let raw = match read_password() {
-        Ok(pwd) => pwd,
-        Err(e) => {
-            println!("*102 {e}#");
-            return;
-        }
-    };
+    stdin().read_line(&mut raw);
+    // let raw = match read_password() {
+    //     Ok(pwd) => pwd,
+    //     Err(e) => {
+    //         println!("*102 {e}#");
+    //         return;
+    //     }
+    // };
     let password = SecretString::new(Box::from(raw));
 
     println!();

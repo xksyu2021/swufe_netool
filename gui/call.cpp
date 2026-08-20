@@ -1,36 +1,29 @@
-#include <array>
 #include <thread>
 #include "share.h"
 
 Ipc *kernel = nullptr, *analyzer = nullptr;
-void submit();
 void analyze(const WSTR&);
 
-#define SIZE 1024
 void knl_loop() {
     WSTR out, err;
     while (kernel && kernel->active()) {
-        std::array<wchar_t, SIZE> out_tmp{};
-        std::array<wchar_t, SIZE> err_tmp{};
-        kernel->readOut(out_tmp.data(), SIZE * sizeof(wchar_t));
-        kernel->readErr(err_tmp.data(), SIZE * sizeof(wchar_t));
-        out += out_tmp.data();
-        err += err_tmp.data();
+        kernel->readOut(out);
+        kernel->readErr(err);
 
         size_t isp_target = out.find(L"*isp#");
         size_t acc_target = out.find(L"*acc#");
         size_t pwd_target = out.find(L"*pwd#");
         size_t suc_target = out.find(L"*suc#");
         if (isp_target!=WSTR::npos) {
-            kernel->send(info.isp);
+            kernel->send(info.isp.c_str());
             kernel->sendLn();
             out.clear();
         } else if (acc_target!=WSTR::npos) {
-            kernel->send(info.acc);
+            kernel->send(info.acc.c_str());
             kernel->sendLn();
             out.clear();
         } else if (pwd_target!=WSTR::npos) {
-            kernel->send(info.pwd);
+            kernel->send(info.pwd.c_str());
             kernel->sendLn();
             out.clear();
         } else if (suc_target!=WSTR::npos) {
@@ -40,6 +33,7 @@ void knl_loop() {
                 TITLE,
                 MB_OK
             );
+            submit_lock = false;
             return;
         }
 
@@ -52,6 +46,7 @@ void knl_loop() {
             ) == IDOK) {
                 analyze(err);
             }
+            submit_lock = false;
             return;
         }
     }
@@ -61,20 +56,18 @@ void knl_loop() {
         TITLE,
         MB_ICONERROR | MB_OK
     );
+    submit_lock = false;
 }
-#undef SIZE
 
-#define SIZE 1024
 void alz_loop() {
     WSTR out;
     while (analyzer && analyzer->active()) {
-        std::array<wchar_t, SIZE> out_tmp{};
-        analyzer->readOut(out_tmp.data(), SIZE * sizeof(wchar_t));
-        out += out_tmp.data();
+        analyzer->readOut(out);
 
         if (out.find(L'#')!=WSTR::npos) {
             analyzer->sendLn();
             // TODO: show the result.
+            analyze_lock = false;
             return;
         }
     }
@@ -84,23 +77,26 @@ void alz_loop() {
         TITLE,
         MB_ICONERROR | MB_OK
     );
+    analyze_lock = false;
 }
-#undef SIZE
 
 void submit() {
     kernel = new Ipc(L"kernel.exe");
+    submit_lock = true;
     std::thread kernel_thread(knl_loop);
     kernel_thread.detach();
 }
 
 void analyze() {
     analyzer = new Ipc(L"analyzer.exe --fix");
+    analyze_lock = true;
     std::thread analyzer_thread(alz_loop);
     analyzer_thread.detach();
 }
 
 void analyze(const WSTR& message) {
     analyzer = new Ipc((L"analyzer.exe --code \"" + message + L"\"").data());
+    analyze_lock = true;
     std::thread analyzer_thread(alz_loop);
     analyzer_thread.detach();
 }

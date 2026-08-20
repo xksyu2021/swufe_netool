@@ -14,15 +14,15 @@ namespace MainLayout {
 
     void setIsp() {
         if (ctr.isChecked(BUTTON_DORM) && ctr.isChecked(BUTTON_CMCC)) {
-            info.isp = const_cast<WSTRP>(L"cmcc");
+            info.isp = L"cmcc";
         } else if (ctr.isChecked(BUTTON_DORM) && ctr.isChecked(BUTTON_CUCC)) {
-            info.isp = const_cast<WSTRP>(L"cucc");
+            info.isp = L"cucc";
         } else if (ctr.isChecked(BUTTON_DORM) && ctr.isChecked(BUTTON_CNET)) {
-            info.isp = const_cast<WSTRP>(L"cnet");
+            info.isp = L"cnet";
         } else if (ctr.isChecked(BUTTON_TEACH) && ctr.isChecked(BUTTON_ISWUFE)) {
-            info.isp = const_cast<WSTRP>(L"iswufe");
+            info.isp = L"iswufe";
         } else if (ctr.isChecked(BUTTON_TEACH) && ctr.isChecked(BUTTON_EDU)) {
-            info.isp = const_cast<WSTRP>(L"eduroam");
+            info.isp = L"eduroam";
         }
     }
 
@@ -192,17 +192,21 @@ namespace MainLayout {
 
             wchar_t pwd_buffer[SIZE]{};
             GetWindowTextW(
-                ctr.getHwnd(INPUT_ACC)
+                ctr.getHwnd(INPUT_PWD)
                 , pwd_buffer, _countof(pwd_buffer)
             );
             info.pwd = pwd_buffer;
 
-            submit();
+            if (!submit_lock) {
+                submit();
+            }
             break;
             #undef SIZE
         }
         case BUTTON_ANALYZE: {
-            analyze();
+            if (!analyze_lock) {
+                analyze();
+            }
             break;
         }
         case BUTTON_MANUAL: {

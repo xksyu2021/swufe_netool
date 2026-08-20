@@ -48,13 +48,12 @@ Ipc::Ipc(const CWSTRP program){
     si.hStdInput  = stdin_read;
     si.hStdOutput = stdout_write;
     si.hStdError  = stderr_write;
-
     PROCESS_INFORMATION pi{};
-    pi.hProcess = process;
 
+    WSTR cmd = program;
     CreateProcessW(
         nullptr,
-        const_cast<WSTRP>(program),
+        cmd.data(),
         nullptr,
         nullptr,
         TRUE,
@@ -64,6 +63,7 @@ Ipc::Ipc(const CWSTRP program){
         &si,
         &pi
     );
+    process = pi.hProcess;
 
     checkAndClose(stdin_read);
     checkAndClose(stdout_write);
@@ -79,32 +79,48 @@ Ipc::~Ipc() {
     close();
 }
 
-void Ipc::send(const WSTRP in) const {
-    WriteFile(
-        stdin_write, in,
-        wcslen(in) * sizeof(wchar_t),
-        nullptr, nullptr
+void Ipc::send(const CWSTRP in) const {
+    const int wide_len = static_cast<int>(wcslen(in));
+    const int byte_len = WideCharToMultiByte(
+        CP_UTF8, 0, in, wide_len,
+        nullptr, 0, nullptr, nullptr
     );
+    if (byte_len <= 0) return;
+    STR bytes(byte_len, '\0');
+    WideCharToMultiByte(
+        CP_UTF8, 0, in, wide_len,
+        bytes.data(), byte_len, nullptr, nullptr
+    );
+    WriteFile(stdin_write, bytes.data(), byte_len, nullptr, nullptr);
 }
 
 void Ipc::sendLn() const {
-    send(const_cast<WSTRP>(L"\n"));
+    send(L"\n");
 }
 
-void Ipc::readOut(WSTRP buffer, DWORD size) const {
-    ReadFile(
-        stdout_read, buffer,
-        size,
-        nullptr, nullptr
-    );
+void Ipc::readPipe(HANDLE pipe, WSTR& out) {
+    DWORD available = 0;
+    PeekNamedPipe(pipe, nullptr, 0, nullptr, &available, nullptr);
+    if (available == 0) {
+        return;
+    }
+    char buffer[4096];
+    DWORD read = 0;
+    if (!ReadFile(pipe, buffer, sizeof(buffer), &read, nullptr) || read == 0) {
+        return;
+    }
+    const int wide_len = MultiByteToWideChar(CP_UTF8, 0, buffer, read, nullptr, 0);
+    if (wide_len <= 0) return;
+    WSTR wide(wide_len, L'\0');
+    MultiByteToWideChar(CP_UTF8, 0, buffer, read, wide.data(), wide_len);
+    out += wide;
 }
 
-void Ipc::readErr(WSTRP buffer, DWORD size) const {
-    ReadFile(
-        stderr_read, buffer,
-        size,
-        nullptr, nullptr
-    );
+void Ipc::readOut(WSTR& out) const {
+    readPipe(stdout_read, out);
+}
+void Ipc::readErr(WSTR& out) const {
+    readPipe(stderr_read, out);
 }
 
 bool Ipc::active() const {
