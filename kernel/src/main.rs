@@ -37,23 +37,28 @@ async fn main() {
     };
 
     // call connect function
+    let mut wait = String::new();
     for item in isp::LIST {
         if isp_param == item.name {
             match connect(item, &user).await {
                 Ok(true) => {
                     println!("*suc#");
+                    stdin().read_line(&mut wait);
                     return;
                 }
                 Ok(false) => {
+                    stdin().read_line(&mut wait);
                     return;
                 }
                 Err(e) => {
                     eprintln!("*100 {e}#");
+                    stdin().read_line(&mut wait);
                     return;
                 }
             }
         }
     };
     eprintln!("*102 No ISP matched.#");
+    stdin().read_line(&mut wait);
     return;
 }

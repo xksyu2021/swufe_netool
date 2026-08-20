@@ -13,7 +13,7 @@ Code    Info
 *isp#   pass in ISP code - cmcc | cucc | cnet | iswufe | eduroam
 *acc#   pass in the account - need not domian
 *pwd#   pass in the password
-*suc#   connection succeed, then kernel exits.
+*suc#   connection succeed, then kernel is ready to exit.
 
 2. stderr
 with the form of:   *xxx message#
@@ -23,7 +23,7 @@ example:            *000 panic#
     1 space following
     message following
     ends with #
-they are signals of error, kernel exits after stderr.
+they are signals of error, kernel is ready to exit after stderr.
 only zero or one of them will appear.
 
 Code    Info
@@ -36,8 +36,13 @@ Code    Info
 *202#   cannot get target ssid. you are not at school, or someone broadcasts fake ssid.
 *300#   connection and auth success, but ping failed. school network error.
 
-3. tips
+3. signal reading
 after a stdout, kernel will hang up to wait stdin;
-after a stderr, kernel will exit.
+after a stderr, kernel will be ready to exit.
 so if you clean the buffer after reciving the last #,
 there is always zero or one *# code in your buffer.
+
+4. exit
+to ensure that the parent process can receive all signals,
+kernel will not exit automatically after *suc# or stderr.
+it will wait any stdin and then exit.
