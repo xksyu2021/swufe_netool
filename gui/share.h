@@ -54,6 +54,7 @@ namespace MainLayout {
     void del();
 };
 
+// ipc toolkit
 class Ipc {
     inline static HANDLE job = nullptr;
 
@@ -70,10 +71,20 @@ class Ipc {
     void close();
 
 public:
-    Ipc(WSTRP);
+    Ipc(CWSTRP);
     ~Ipc();
     void send(WSTRP) const;
+    void sendLn() const;
     void readOut(WSTRP buffer, DWORD size) const;
     void readErr(WSTRP buffer, DWORD size) const;
-    bool active() const;
+    [[nodiscard]] bool active() const;
 };
+
+// info
+inline struct Info {
+    WSTRP isp, acc, pwd;
+} info;
+
+// op function
+void submit();
+void analyze();

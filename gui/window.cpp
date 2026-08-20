@@ -8,9 +8,23 @@ namespace MainLayout {
         LABLE_ACC, LABLE_DOMAIN, LABLE_PWD,
         BUTTON_DORM, BUTTON_TEACH,
         BUTTON_CMCC, BUTTON_CUCC, BUTTON_CNET, BUTTON_ISWUFE, BUTTON_EDU,
-        BUTTON_SUBMIT, BUTTON_ANALYZE,
+        BUTTON_SUBMIT, BUTTON_ANALYZE, BUTTON_MANUAL,
         INPUT_ACC, INPUT_PWD
     };
+
+    void setIsp() {
+        if (ctr.isChecked(BUTTON_DORM) && ctr.isChecked(BUTTON_CMCC)) {
+            info.isp = const_cast<WSTRP>(L"cmcc");
+        } else if (ctr.isChecked(BUTTON_DORM) && ctr.isChecked(BUTTON_CUCC)) {
+            info.isp = const_cast<WSTRP>(L"cucc");
+        } else if (ctr.isChecked(BUTTON_DORM) && ctr.isChecked(BUTTON_CNET)) {
+            info.isp = const_cast<WSTRP>(L"cnet");
+        } else if (ctr.isChecked(BUTTON_TEACH) && ctr.isChecked(BUTTON_ISWUFE)) {
+            info.isp = const_cast<WSTRP>(L"iswufe");
+        } else if (ctr.isChecked(BUTTON_TEACH) && ctr.isChecked(BUTTON_EDU)) {
+            info.isp = const_cast<WSTRP>(L"eduroam");
+        }
+    }
 
     void eduMode(bool bl) {
         if (bl) {
@@ -166,12 +180,33 @@ namespace MainLayout {
 
         switch (wmId) {
         case BUTTON_SUBMIT: {
+            #define SIZE 1024
+            setIsp();
 
+            wchar_t acc_buffer[SIZE]{};
+            GetWindowTextW(
+                ctr.getHwnd(INPUT_ACC)
+                , acc_buffer, _countof(acc_buffer)
+            );
+            info.acc = acc_buffer;
+
+            wchar_t pwd_buffer[SIZE]{};
+            GetWindowTextW(
+                ctr.getHwnd(INPUT_ACC)
+                , pwd_buffer, _countof(pwd_buffer)
+            );
+            info.pwd = pwd_buffer;
+
+            submit();
             break;
+            #undef SIZE
         }
         case BUTTON_ANALYZE: {
-
+            analyze();
             break;
+        }
+        case BUTTON_MANUAL: {
+            // TODO: switch to manual toolkits menu
         }
 
         default: break;
@@ -179,6 +214,6 @@ namespace MainLayout {
     }
 
     void del() {
-
+        // TODO: switch to manual toolkits menu
     }
 }

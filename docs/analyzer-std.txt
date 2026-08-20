@@ -4,7 +4,7 @@ used for IPC
 1. args
 
 arg                 usage
---code <message>    analyze error code from kernel
+--code "<message>"  analyze error code from kernel
 --fix               research and fix network error in your computer
 --fix <code>        fix dedicated network error in your computer
 

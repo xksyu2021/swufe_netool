@@ -29,7 +29,7 @@ void Ipc::close() {
     checkAndClose(process);
 }
 
-Ipc::Ipc(const WSTRP program){
+Ipc::Ipc(const CWSTRP program){
     SECURITY_ATTRIBUTES sa{};
     sa.nLength = sizeof(sa);
     sa.bInheritHandle = TRUE;
@@ -54,7 +54,7 @@ Ipc::Ipc(const WSTRP program){
 
     CreateProcessW(
         nullptr,
-        program,
+        const_cast<WSTRP>(program),
         nullptr,
         nullptr,
         TRUE,
@@ -85,6 +85,10 @@ void Ipc::send(const WSTRP in) const {
         wcslen(in) * sizeof(wchar_t),
         nullptr, nullptr
     );
+}
+
+void Ipc::sendLn() const {
+    send(const_cast<WSTRP>(L"\n"));
 }
 
 void Ipc::readOut(WSTRP buffer, DWORD size) const {
